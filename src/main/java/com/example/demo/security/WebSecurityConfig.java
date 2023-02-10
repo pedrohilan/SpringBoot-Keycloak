@@ -29,7 +29,9 @@ public class WebSecurityConfig {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }).csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).disable().cors().configurationSource(request -> corsConfiguration.applyPermitDefaultValues()).and().httpBasic();
+        }).csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).disable()
+                .cors().configurationSource(request -> corsConfiguration.applyPermitDefaultValues())
+                .and().httpBasic();
         return http.build();
     }
 
