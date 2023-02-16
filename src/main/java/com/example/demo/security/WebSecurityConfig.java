@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
@@ -15,6 +16,9 @@ import org.springframework.web.cors.CorsConfiguration;
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
+
+    private static final String[] AUTH_LIST = {"/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**", "/v2/api-docs/**", "/swagger-resources/**"};
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
@@ -23,6 +27,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((authz) -> {
             try {
                 authz
+                        .requestMatchers(AUTH_LIST).permitAll()
                         .anyRequest().authenticated()
                         .and().oauth2ResourceServer()
                         .jwt().jwtAuthenticationConverter(getJwtAuthenticationConverter());
